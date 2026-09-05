@@ -5,7 +5,7 @@ Metztli is a project making it easy to enter lunatask tasks via handwriting them
 The physical act of note-taking improves retention. But sometimes you just really need reminders. A hybrid system is worth exploring.
 
 # Usage
-You'll need an iPad, the Notes app, Shortcuts (the Apple service, not the SaaS previously known as Clubhouse), this service, and a Lunatask account.
+You'll need an iPad with scribble turned on, the Notes app, Shortcuts (the Apple service, not the SaaS previously known as Clubhouse), this service, and a Lunatask account.
 
 ## Setup
 ### Deployment

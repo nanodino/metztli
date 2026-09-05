@@ -18,6 +18,10 @@ const PORT = Number(process.env.PORT ?? 3000);
 
 const app = express();
 app.use(express.json({ limit: '256kb' }));
+app.use((req, _res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
 
 interface TaskLineResult {
   line: string;
@@ -28,10 +32,11 @@ interface TaskLineResult {
 }
 
 function extractTaskLines(text: string): string[] {
+  console.log(text);
   return text
 	.split('\n')
-	.map((l) => l.trim())
 	.filter((l) => l.startsWith('- ') || l.startsWith('-\t'))
+	.map((l) => l.trim())
 	.map((l) => l.slice(1).trim());
 }
 
@@ -60,11 +65,13 @@ app.post('/notes', async (req: Request, res: Response) => {
   const { text, areaId } = req.body as { text?: string; areaId?: string };
 
   if (typeof text !== 'string' || text.trim().length === 0) {
+	console.log('missing "text" in request body');
 	return res.status(400).json({ error: 'missing "text" in request body' });
   }
 
   const targetAreaId = areaId ?? DEFAULT_AREA_ID;
   if (!targetAreaId) {
+	console.log("no areaID provided")
 	return res.status(400).json({ error: 'no areaId provided and no default configured' });
   }
 
@@ -97,6 +104,7 @@ app.post('/notes', async (req: Request, res: Response) => {
   }
 
   const failed = results.filter((r) => !r.ok);
+  console.log(`created ${results.length - failed.length} tasks`)
 
   res.json({
 	created: results.length - failed.length,
